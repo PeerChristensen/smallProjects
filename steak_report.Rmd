@@ -2,7 +2,7 @@
 title: "How Americans like their steak"
 author: "Peer Christensen"
 date: "24/1/2017"
-output: html_document
+output: github_document
 ---
 ```{r,echo=F}
 library(fivethirtyeight)
