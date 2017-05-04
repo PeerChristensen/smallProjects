@@ -13,7 +13,7 @@ The data used for this report came from.........
 
 ## Steak preparation preference by region
 
-```{r}
+```{r eval=T}
 steak_reg=prop.table(table(steak_survey$region,steak_survey$steak_prep),1)
 steak_reg=steak_reg[,order=c(5,4,3,2,1)]
 par(mfrow=c(3,3),mar=c(3,3,3,3))
@@ -27,10 +27,10 @@ for (i in seq(9)) {barplot(steak_reg[i,],main=dimnames(steak_reg)[[1]][i],col=co
 steak_gen=prop.table(table(steak_survey$female,steak_survey$steak_prep),1)
 steak_gen=steak_gen[,order=c(5,4,3,2,1)]
 par(mfrow=c(1,2))
-```{r eval=T}
+```
 barplot(steak_gen[2,],col=brewer.pal(5,"RdPu"),main="Women")
 barplot(steak_gen[1,],col=brewer.pal(5,"Blues"),main="Men")
-```
+
 ## Smokers vs. non-smokers
 
 ```{r}
