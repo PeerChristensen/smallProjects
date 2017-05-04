@@ -2,9 +2,9 @@
 title: "How Americans like their steak"
 author: "Peer Christensen"
 date: "24/1/2017"
-output: github_document
+output: rmarkdown::github_document
 ---
-```{r,echo=F}
+```{r}
 library(fivethirtyeight)
 library(RColorBrewer)
 ```
