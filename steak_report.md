@@ -1,7 +1,7 @@
 How Americans like their steak
 ================
 Peer Christensen
-241/2017
+24/1/2017
 
 Steak preparation preference by region
 --------------------------------------
