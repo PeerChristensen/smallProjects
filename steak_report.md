@@ -3,8 +3,6 @@ How Americans like their steak
 Peer Christensen
 24/1/2017
 
-The data used for this report came from.........
-
 Steak preparation preference by region
 --------------------------------------
 
