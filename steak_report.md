@@ -1,6 +1,4 @@
-How Americans like their 
-
-k
+How Americans like their steak
 ================
 Peer Christensen
 241/2017
