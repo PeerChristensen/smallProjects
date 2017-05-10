@@ -7,7 +7,7 @@ Install and load packages and data
 --------------------------------------
 
 ``` r
-install.packages(c("fivethirtyeight","ColorRampPalette","RColorBrewer")
+install.packages(c("fivethirtyeight","ColorRampPalette","RColorBrewer"))
 library(fivethirtyeight)
 library(ColorRampPalette)
 library(RColorBrewer)
