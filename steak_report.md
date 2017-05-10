@@ -3,6 +3,16 @@ How Americans like their steak
 Peer Christensen
 24/1/2017
 
+Install and load packages and data
+--------------------------------------
+
+``` r
+install.packages(c("fivethirtyeight","ColorRampPalette","RColorBrewer")
+library(fivethirtyeight)
+library(ColorRampPalette)
+library(RColorBrewer)
+```
+
 Steak preparation preference by region
 --------------------------------------
 
