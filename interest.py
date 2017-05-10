@@ -1,24 +1,29 @@
-def interest(amount, interest, years,deposit,tax):
 
-    '''
-    (x,y,z..) -> final amount
+'''
+(x,y,z..) -> final amouny
+
+calculates the future balance of a financial repository
+based on:
+- the initial amount
+- the yearly interest or return in %
+- number of forward years to include
+- monthly deposits
+- tax
     
-    calculates the balance of a
-    savings account based on the initial amount,
-    the yearly interest in %, number of years, monthly deposits and tax
-    
-    example:
-    >>> interest(250000, 1, 1)
-    252500
-    '''
-    
-    tax_amount=0
-    new_amount=0
+example:
+>>> interest(250000, 1, 1)
+252500
+<'''
+
+
+def interest(amount, interest, years,deposit,tax):
+    taxAmount=0
+    newAmount=0
     for year in range(years):
-        new_amount = interest/100*amount
-        tax_amount = tax/100*new_amount
+        newAmount = interest/100*amount
+        taxAmount = tax/100*newAmount
         amount += deposit*12
-        amount+=new_amount
-        amount-=tax_amount
+        amount+=newAmount
+        amount-=taxAmount
         
     return int(amount)
