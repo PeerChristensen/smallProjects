@@ -1,5 +1,6 @@
 # How Americans like their steak
 
+install.packages(c("fivethirtyeight","ColorRampPalette","RColorBrewer"))
 library(fivethirtyeight)
 library(ColorRampPalette)
 library(RColorBrewer)
