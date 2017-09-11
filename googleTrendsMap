@@ -1,0 +1,36 @@
+# Google Trends tutorial and an example of integrating data with a map
+
+devtools::install_github('PMassicotte/gtrendsR')
+library(gtrendsR)
+library(maps)
+library(ggplot2)
+
+# Using geo data
+hurricanes = gtrends(c("Katrina","Harvey","Irma"), gprop = "web",time="all", geo = c("US"))
+plot(hurricanes)
+
+harvey = gtrends(c("Harvey"), gprop = "web",time="today 12-m", geo = c("US"))
+harvey=harvey$interest_by_region
+harvey$region=sapply(harvey$location,tolower)
+statesMap=map_data("state")
+merged=merge(statesMap,harvey,by="region")
+
+harveyPlot=ggplot() +
+  geom_polygon(data=merged,aes(x=long,y=lat,group=group,fill=hits),colour="white") +
+  scale_fill_continuous(low="thistle2",high="darkred",guide="colorbar") +
+  theme_bw() +
+  labs(title="Google search interest for Hurricane Harvey in each state from the week prior to landfall in the US")
+harveyPlot
+
+irma = gtrends(c("Irma"),time=, gprop = "web", time="today 12-m",geo = c("US"))[[1]]
+irma=irma$interest_by_region
+irma$region=sapply(irma$location,tolower)
+statesMap=map_data("state")
+merged=merge(statesMap,irma,by="region")
+
+irmaPlot=ggplot() +
+  geom_polygon(data=merged,aes(x=long,y=lat,group=group,fill=hits),colour="white") +
+  scale_fill_continuous(low="thistle2",high="darkblue",guide="colorbar") +
+  theme_bw() +
+  labs(title="Google search interest for Hurricane Irma in each state from the week prior to landfall in the US") 
+irmaPlot
