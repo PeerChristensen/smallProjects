@@ -1,0 +1,77 @@
+---
+title: "Google trends and Map Tutorial with hurricanes!"
+output:
+  html_notebook: default
+  html_document: default
+Author: Peer Christensen
+---
+
+```{r include=FALSE} 
+knitr::opts_chunk$set(message = F) 
+knitr::opts_chunk$set(warning = F) 
+
+```
+
+This is a quick introduction on how to get and visualize time series and geographical data from Google Trends using the packages gtrendsR, maps and ggplot2. In this tutorial, we will look at search interest for particular named hurricanes.
+
+
+First, we load the required packages. This little shortcut will also install packages in case you haven't already. Note that we use devtools to download a developer version of gtrendsR.
+```{r}
+devtools::install_github('PMassicotte/gtrendsR')
+if(!require("pacman")) install.packages("pacman")
+pacman::p_load(gtrendsR,maps,ggplot2)
+```
+Let's first look at how the impact of hurricanes Katrina, Harvey and Irma is reflected in how Americans have used these names as google search items over time.
+The gprop argument controls whether we want e.g. general web, news, image or youtube searches.
+The time argument is set to "all" and will gather data between 2004 and the time the code is run.
+```{r }
+hurricanes = gtrends(c("Katrina","Harvey","Irma"), gprop = "web",time="all", geo = c("US"))
+plot(hurricanes)
+```
+
+As you can see, the gtrends function actually returns a list of data frames.
+```{r}
+str(hurricanes)
+```
+Now, we will compare the amount of interest in Hurricane Harvey for each US state. There are different ways of specifying start and end dates, but these methods don't seem to work properly. Hopefully, this will be fixed in later versions. In this example, we use the current date and include searches coing back one year.
+```{r}
+harvey = gtrends(c("Harvey"), gprop = "web",time="today 12-m", geo = c("US"))
+harvey = harvey$interest_by_region
+harvey$region = sapply(harvey$location,tolower)
+statesMap = map_data("state")
+harveyMerged = merge(statesMap,harvey,by="region")
+```
+On the fourth line in the code above, we fetch an empty map for plotting our geographical data. 
+On the fifth line, we merge our google trends data with the underlying map data. Both data sets contain a column called "region", which will be used to merge the data frames. Note that the region labels need to be identical. therefore, on line 3, we change the capitalized state names to lowercase.
+Now we can plot the data!
+```{r}
+harveyPlot=ggplot() +
+  geom_polygon(data=harveyMerged,aes(x=long,y=lat,group=group,fill=hits),colour="white") +
+  scale_fill_continuous(low="thistle2",high="darkred",guide="colorbar") +
+  theme_bw() +
+  labs(title="Google search interest for Hurricane Harvey in each state\n from the week prior to landfall in the US")
+harveyPlot
+```
+We then use the same procedure for plotting regional searches for Hurricane Irma, except we add a label for each state and change the colour.
+```{r}
+irma = gtrends(c("Irma"), gprop = "web", time="today 12-m",geo = c("US"))
+irma = irma$interest_by_region
+irma$region = sapply(irma$location,tolower)
+statesMap = map_data("state")
+irmaMerged = merge(statesMap ,irma,by="region")
+
+regionLabels <- aggregate(cbind(long, lat) ~ region, data=irmaMerged, 
+                          FUN=function(x) mean(range(x)))
+
+irmaPlot=ggplot() +
+  geom_polygon(data=irmaMerged,aes(x=long,y=lat,group=group,fill=hits),colour="white") +
+  scale_fill_continuous(low="thistle2",high="darkblue",guide="colorbar") +
+  geom_text(data=regionLabels, aes(long, lat, label = region), size=2) +
+  theme_bw() +
+  labs(title="Google search interest for Hurricane Irma in each state\n from the week prior to landfall in the US") 
+irmaPlot
+```
+
+
+
+
