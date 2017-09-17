@@ -1,9 +1,8 @@
 ---
 title: "Google trends and Map Tutorial with hurricanes!"
-output:
-  html_notebook: default
-  html_document: default
-Author: Peer Christensen
+author: "Peer Christensen"
+date: "16/9/2017"
+output: html_document
 ---
 
 ```{r include=FALSE} 
@@ -17,7 +16,9 @@ This is a quick introduction on how to get and visualize time series and geograp
 
 First, we load the required packages. This little shortcut will also install packages in case you haven't already. Note that we use devtools to download a developer version of gtrendsR.
 ```{r}
+if (!require('gtrendsR')) 
 devtools::install_github('PMassicotte/gtrendsR')
+
 if(!require("pacman")) install.packages("pacman")
 pacman::p_load(gtrendsR,maps,ggplot2)
 ```
@@ -49,10 +50,10 @@ harveyPlot=ggplot() +
   geom_polygon(data=harveyMerged,aes(x=long,y=lat,group=group,fill=hits),colour="white") +
   scale_fill_continuous(low="thistle2",high="darkred",guide="colorbar") +
   theme_bw() +
-  labs(title="Google search interest for Hurricane Harvey in each state\n from the week prior to landfall in the US")
+  labs(title="Google search interest for Hurricane Harvey in each state")
 harveyPlot
 ```
-We then use the same procedure for plotting regional searches for Hurricane Irma, except we add a label for each state and change the colour.
+We then use the same procedure for plotting regional searches for Hurricane Irma, except we add a label for each state, change the colour and add the coord_fixed argument.
 ```{r}
 irma = gtrends(c("Irma"), gprop = "web", time="today 12-m",geo = c("US"))
 irma = irma$interest_by_region
@@ -60,15 +61,16 @@ irma$region = sapply(irma$location,tolower)
 statesMap = map_data("state")
 irmaMerged = merge(statesMap ,irma,by="region")
 
-regionLabels <- aggregate(cbind(long, lat) ~ region, data=irmaMerged, 
+regionLabels <- aggregate(cbind(long, lat) ~ location, data=irmaMerged, 
                           FUN=function(x) mean(range(x)))
 
 irmaPlot=ggplot() +
   geom_polygon(data=irmaMerged,aes(x=long,y=lat,group=group,fill=hits),colour="white") +
   scale_fill_continuous(low="thistle2",high="darkblue",guide="colorbar") +
-  geom_text(data=regionLabels, aes(long, lat, label = region), size=2) +
+  geom_text(data=regionLabels, aes(long, lat, label = location), size=2) +
   theme_bw() +
-  labs(title="Google search interest for Hurricane Irma in each state\n from the week prior to landfall in the US") 
+  coord_fixed(1.3) +
+  labs(title="Google search interest for Hurricane Irma in each state") 
 irmaPlot
 ```
 
