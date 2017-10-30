@@ -6,3 +6,4 @@
 4. A script looking at US stock indices and how they are correlated
 5. A tutorial on using google trends data and plotting on a map
 6. More map methods: plotting data onto world map
+7. Scraping reviews from trustpilot
